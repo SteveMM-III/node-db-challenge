@@ -41,7 +41,16 @@ router.put( '/:id', ( req, res ) => {
 } );
 
 router.delete( '/:id', ( req, res ) => {
-
+  db.deleteProject( req.params.id )
+    .then( deleted => {
+      return deleted ?
+        res.json( { removed: deleted } )
+      : res.status( 404 ).json( { message: 'the project selected for deletion was not found' } );
+    } )
+    .catch( error => {
+      console.log( error );
+      res.status( 500 ).json( { error: 'There was a problem deleting the project' } );
+    } );
 } );
 //=============================================================
 

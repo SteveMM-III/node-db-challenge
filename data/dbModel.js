@@ -31,10 +31,12 @@ function insertProject( project ) {
   return db( 'projects' )
     .insert( project )
     .then( ids => {
-      db( 'projects' )
+      return db( 'projects' )
         .where( { id: ids[ 0 ] } )
-        .then( newProject => { 
+        .first()
+        .then( newProject => {
           newProject.completed = newProject.completed ? true : false;
+          console.log( newProject );
           return newProject;
         } );
     } );
@@ -45,7 +47,27 @@ function updateProject( project_id ) {
 }
 
 function deleteProject( project_id ) {
-
+  return db( 'projects' )
+    .where( 'id', project_id )
+    .first()
+    .then( project => {
+      if ( project ) {
+        return db( 'tasks' )
+          .where( 'project_id', project_id )
+          .delete()
+          .then( () => {
+            return db( 'project_resources' )
+              .where( 'project_id', project_id )
+              .delete()
+              .then( () => {
+                return db( 'projects' )
+                  .where( 'id', project_id )
+                  .delete()
+                  .then( () => project );
+              } );
+          } );
+       } else { return null; }
+    } );
 }
 //=============================================================
 
@@ -61,10 +83,13 @@ function insertResource( project_id, resource ) {
   return db( 'resources' )
     .insert( resource )
     .then( ids => {
-      db( 'project_resources' )
+      return db( 'project_resources' )
         .insert( { project_id: project_id, resource_id: ids[ 0 ] } )
-        return db( 'resources' )
-          .where( { id: ids[ 0 ] } );
+        .then( () => {
+          return db( 'resources' )
+          .where( { id: ids[ 0 ] } )
+          .first();
+        } );
     } );
 }
 
@@ -82,10 +107,10 @@ function getTasks( project_id ) {
     .select( 't.id as task_id'
       , 'p.name as project'
       , 'p.description'
-      , 't.task_number'
-      , 't.task_desription'
-      , 't.task_notes'
-      , 't.task_completed' )
+      , 't.number as task_number'
+      , 't.description as task_description'
+      , 't.notes as task_notes'
+      , 't.completed as task_completed' )
     .join( 'projects as p', 't.project_id', 'p.id' )
     .where( 'p.id', project_id );
 }
@@ -98,10 +123,10 @@ function insertTask( project_id, task ) {
         .select( 't.id as task_id'
           , 'p.name as project'
           , 'p.description'
-          , 't.task_number'
-          , 't.task_desription'
-          , 't.task_notes'
-          , 't.task_completed' )
+          , 't.number'
+          , 't.description'
+          , 't.notes'
+          , 't.completed' )
         .join( 'projects as p', 't.project_id', 'p.id' )
         .where( 't.id', ids[ 0 ] );
     } )

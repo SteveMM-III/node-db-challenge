@@ -10,6 +10,7 @@ exports.up = function( knex ) {
       .string( 'description' );
     tbl
       .boolean( 'completed' )
+      .notNullable()
       .defaultTo( false );
   } )
   .createTable( 'resources', tbl => {
@@ -48,15 +49,16 @@ exports.up = function( knex ) {
       .references( 'id' )
       .inTable( 'projects' );
     tbl
-      .integer( 'task_number' )
+      .integer( 'number' )
       .notNullable()
     tbl
-      .string( 'task_description' )
+      .string( 'description' )
       .notNullable();
     tbl
       .string( 'notes' );
     tbl
       .boolean( 'completed' )
+      .notNullable()
       .defaultTo( false );
   } );
 };
