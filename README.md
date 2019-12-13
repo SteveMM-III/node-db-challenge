@@ -36,7 +36,6 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 
 
 
-
 ####################################################################################
 ## Self-Study/Essay Questions
 
@@ -67,7 +66,6 @@ many to many relationships require having many elements that can appear individu
 
 
 ####################################################################################
-
 
 
 
