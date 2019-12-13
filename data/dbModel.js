@@ -10,6 +10,7 @@ module.exports = {
   insertResource,
   updateResource,
   deleteResource,
+  getAllTasks,
   getTasks,
   insertTask,
   updateTask,
@@ -55,17 +56,27 @@ function deleteProject( project_id ) {
         return db( 'tasks' )
           .where( 'project_id', project_id )
           .delete()
-          .then( () => {
-            return db( 'project_resources' )
-              .where( 'project_id', project_id )
-              .delete()
+          /* .then( () => {
+            return db( 'resources as r' )
+              .where( 'project_resources.project_id', project_id )
+              .whereIn( 'resources.id', function() {
+                this.select( 'resource_id' )
+                .from( 'project_resources' )
+                .where( 'project_resources.project_id', project_id )
+              } )
+              .delete() */
               .then( () => {
-                return db( 'projects' )
-                  .where( 'id', project_id )
-                  .delete()
-                  .then( () => project );
+                return db( 'project_resources' )
+                .where( 'project_id', project_id )
+                .delete()
+                .then( () => {
+                  return db( 'projects' )
+                    .where( 'id', project_id )
+                    .delete()
+                    .then( () => project );
+                } );
               } );
-          } );
+          //} );
        } else { return null; }
     } );
 }
@@ -102,6 +113,18 @@ function deleteResource( project_id, resource_id ) {
 }
 //=============================================================
 
+function getAllTasks() {
+  return db( 'tasks as t' )
+    .select( 't.id as task_id'
+      , 'p.name as project'
+      , 'p.description'
+      , 't.number as task_number'
+      , 't.description as task_description'
+      , 't.notes as task_notes'
+      , 't.completed as task_completed' )
+    .join( 'projects as p', 't.project_id', 'p.id' )
+}
+
 function getTasks( project_id ) {
   return db( 'tasks as t' )
     .select( 't.id as task_id'
@@ -116,10 +139,11 @@ function getTasks( project_id ) {
 }
 
 function insertTask( project_id, task ) {
+  task.project_id = project_id;
   return db( 'tasks' )
     .insert( task )
     .then( ids => {
-      return db( 'tasks' )
+      return db( 'tasks as t' )
         .select( 't.id as task_id'
           , 'p.name as project'
           , 'p.description'
