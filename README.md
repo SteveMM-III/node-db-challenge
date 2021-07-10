@@ -34,17 +34,40 @@ Follow these steps for completing your project.
 
 Commit your code regularly and use descriptive messages. This helps both you (in case you ever need to return to old code) and your Team Lead.
 
+
+
+####################################################################################
 ## Self-Study/Essay Questions
 
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 - [ ] Explain the difference between `Relational Databases` and `SQL`.
 
+relational databases are stored in tables with rows and columns to form tables.  SQL is the language used to query the database and retrieve data.
+
+
+
 - [ ] Why do tables need a `primary key`?
+
+primary keys are unique identifiers for each entry in a database table
+
+
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 
+foreign key
+
+
+
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+many to many relationships require having many elements that can appear individually on many different tables
+
+
+
+####################################################################################
+
+
 
 ## Minimum Viable Product
 

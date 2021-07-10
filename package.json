@@ -1,0 +1,30 @@
+{
+  "name": "node-db-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SteveMM-III/node-db-challenge.git"
+  },
+  "author": "SteveMM-III <SteveMorehead@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "knex": "^0.20.4",
+    "knex-cleaner": "^1.3.0",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "description": "Node.js DB Sprint Challenge",
+  "bugs": {
+    "url": "https://github.com/SteveMM-III/node-db-challenge/issues"
+  },
+  "homepage": "https://github.com/SteveMM-III/node-db-challenge#readme",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "keywords": []
+}
